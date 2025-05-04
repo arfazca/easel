@@ -1,0 +1,56 @@
+% Set up hyperref package
+\hypersetup{colorlinks=false}
+
+% Redefine footer style to remove page number
+\fancypagestyle{plain}{
+    \fancyhf{} % Clear header and footer
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+% Define commands
+\newcommand{\plus}{\raisebox{0.25ex}{\scalebox{0.7}{+}}}
+\newcommand{\plusplus}{\raisebox{0.25ex}{\scalebox{0.7}{++}}}
+\newcommand{\CustomRuler}{\vspace{0\baselineskip}\rule{\linewidth}{0.5pt}\vspace{-0.5\baselineskip}}
+
+% CENTRALIZED SPACING CONTROLS
+% Base spacing commands
+\newcommand{\VSingle}{\vspace{10pt}\\}         % Vertical space + single line break
+\newcommand{\VDouble}{\vspace{10pt}\\\\}       % Vertical space + double line break
+\newcommand{\Single}{\\}                       % Single line break only
+\newcommand{\Double}{\\\\}                     % Double line break only
+
+% Custom spacing with specific measurements
+\newcommand{\VTinyS}{\vspace{1pt}\Single}      % Tiny vertical space (1pt) + single break
+\newcommand{\VSmallS}{\vspace{5pt}\Single}     % Small vertical space (5pt) + single break
+\newcommand{\VMediumS}{\vspace{10pt}\Single}   % Medium vertical space (10pt) + single break
+\newcommand{\VLargeS}{\vspace{20pt}\Single}    % Large vertical space (20pt) + single break
+
+\newcommand{\VTinyD}{\vspace{1pt}\Double}      % Tiny vertical space + double break
+\newcommand{\VSmallD}{\vspace{5pt}\Double}     % Small vertical space + double break
+\newcommand{\VMediumD}{\vspace{10pt}\Double}   % Medium vertical space + double break
+\newcommand{\VLargeD}{\vspace{20pt}\Double}    % Large vertical space + double break
+
+% Negative spacing variants
+\newcommand{\VNegS}{\vspace{-7pt}\Single}      % Negative vertical space + single break
+\newcommand{\VNegD}{\vspace{-7pt}\Double}      % Negative vertical space + double break
+\newcommand{\VNegTinyS}{\vspace{-3pt}\Single}  % Small negative space + single break
+\newcommand{\VNegLargeS}{\vspace{-10pt}\Single} % Large negative space + single break
+
+% Header specific spacing
+\newcommand{\HeaderNameSpacing}{\VTinyS}
+\newcommand{\HeaderLocationSpacing}{\VTinyS}
+\newcommand{\AfterRulerSpacing}{\VLargeS}
+\newcommand{\DateSpacing}{\VSmallS}
+
+% Body specific spacing
+\newcommand{\CompanyAddressSpacing}{\VTinyS}
+\newcommand{\GreetingSpacing}{\VMediumS}
+\newcommand{\ParagraphSpacing}{\VNegD}
+\newcommand{\CompanyDivisionSpacing}{\Single}
+\newcommand{\LocationSpacing}{\Single}
+
+% Signature specific spacing
+\newcommand{\SignatureSpacing}{\VNegLargeS}
+
+% Any additional formatting commands
+\newcommand{\shar}{\raisebox{0.25ex}{\scalebox{0.7}{\#}}}
