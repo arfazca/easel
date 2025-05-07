@@ -34,3 +34,6 @@ riderModule.iml
 .idea/
 *.sln.iml
 *.csproj.user
+
+# OS specific files
+.DS_Store
