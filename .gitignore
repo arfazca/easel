@@ -1,5 +1,36 @@
+# General ignores
 bin/
 obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+*.DS_Store
+*.user
+*.suo
+*.cache
+*.dotCover
+*.swp
+*.sln.DotSettings.user
+
+# Build and output directories
+/ToolKit/bin/
+/ToolKit/obj/
+/Applications/
+/Templates/Temporary/
+
+# Personal data files
+/Data/
+/appsettings.json
+
+# LaTeX compilation artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.pdf
+
+# IDE specific files
+.vs/
+.idea/
+*.sln.iml
+*.csproj.user
