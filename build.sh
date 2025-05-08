@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# Set -e to exit immediately if any command fails
+# Setting -e to exit immediately if any command fails
 set -e
 
-# Get the directory of this script
+# Getting the directory 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-# Change to the project root directory
 cd "$SCRIPT_DIR" || exit 1
-
-# Directory paths 
 TOOLKIT_DIR="ToolKit"
 PROJECT_FILE="$TOOLKIT_DIR/easel.csproj"
 
