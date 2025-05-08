@@ -10,6 +10,56 @@ public class ApplicationManager(
     IConsoleInterfaceService consoleInterface,
     IBasePathProvider pathProvider)
 {
+    public async Task RunNonInteractiveAsync(
+        string templateName,
+        string position,
+        string companyName,
+        string companySuffix,
+        string division,
+        string city,
+        string state,
+        string terms)
+    {
+        try
+        {
+            var termPeriods = pathProvider.GetTermPeriods();
+            if (termPeriods.Length == 0)
+            {
+                throw new InvalidOperationException("No term periods configured");
+            }
+
+            var appData = new ApplicationData
+            {
+                Position = position,
+                CompanyName = companyName,
+                CompanySuffix = companySuffix,
+                Division = division,
+                City = city,
+                State = state,
+                Terms = terms,
+                UpTerm = termPeriods.Length > 0 ? termPeriods[0] : "DEFAULT TERM"
+            };
+
+            // Generate document
+            var workingDir = await templateService.GenerateDocument(appData, templateName);
+        
+            // Compile to PDF
+            var outputPath = await templateService.CompileToPdf(
+                workingDir, 
+                appData.GenerateFileName(),
+                appData);
+            
+            Console.WriteLine($"Generated: {outputPath}");
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error: {ex.Message}");
+            Console.ResetColor();
+            Environment.Exit(1);
+        }
+    }
+    
     public async Task RunAsync()
     {
         try
