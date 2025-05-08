@@ -86,10 +86,10 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
     }
 
     private async Task<string?> SelectWithFzf(
-        string prompt, 
-        string? filePath = null, 
-        List<string>? options = null,
-        bool allowAddOption = true)
+    string prompt, 
+    string? filePath = null, 
+    List<string>? options = null,
+    bool allowAddOption = true)
     {
         string[] inputLines = options is not null 
             ? [.. options]
@@ -107,7 +107,13 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
 
         if (shouldAllowAdd)
         {
-            inputLines = inputLines.Append("+++++++++++++++++++++ ADD NEW OPTION +++++++++++++++++++++").ToArray();
+            inputLines = inputLines.Append("+++++++++++++++++++++ ADD NEW OPTION +++++++++++++++++++++")
+                                  .Append("ESC - EXIT")
+                                  .ToArray();
+        }
+        else
+        {
+            inputLines = inputLines.Append("ESC - EXIT").ToArray();
         }
 
         if (inputLines.Length == 0) return null;
@@ -115,7 +121,7 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
         var psi = new ProcessStartInfo
         {
             FileName = "fzf",
-            Arguments = $"--prompt=\"{prompt}> \"",
+            Arguments = $"--prompt=\"{prompt}> \" --bind=esc:cancel",
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
             UseShellExecute = false,
@@ -137,6 +143,13 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
         await process.WaitForExitAsync();
 
         selected = selected.Trim();
+
+        // Check if ESC was pressed or EXIT was selected
+        if (string.IsNullOrEmpty(selected) || selected.Equals("ESC - EXIT", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("Operation cancelled by user.");
+            Environment.Exit(0);
+        }
 
         if (selected.StartsWith("+++++++++++++++++++++"))
         {
@@ -175,5 +188,22 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
         }
 
         return string.IsNullOrWhiteSpace(selected) ? null : selected;
+    }
+    
+    public ApplicationData CreateApplicationDataFromArgs(
+        string position, string companyName, string companySuffix,
+        string division, string city, string state, string terms, string[] termPeriods)
+    {
+        return new ApplicationData
+        {
+            Position = position,
+            CompanyName = companyName,
+            CompanySuffix = companySuffix,
+            Division = division,
+            City = city,
+            State = state,
+            Terms = terms,
+            UpTerm = termPeriods.Length > 0 ? termPeriods[0] : "DEFAULT TERM"
+        };
     }
 }
