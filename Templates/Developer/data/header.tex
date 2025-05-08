@@ -4,27 +4,28 @@
   \noindent
   \begin{tabular}{|p{\dimexpr\textwidth-2\tabcolsep\relax}|}
     \hline
-    \begin{center}
-      \vspace{6pt}
-      {\fontsize{27}{34}\selectfont\textbf{#1}} \\  % Restored original font size
-      \vspace{2pt}
-      {\footnotesize #2 | \href{mailto:#3}{#3} | \href{https://www.linkedin.com/in/#4}{linkedin.com/in/#4} | \href{https://github.com/#5}{github.com/#5}}
-      \vspace{6pt}
-    \end{center} \\
+  \begin{center}
+    \textbf{\Huge #1} \\
+    \vspace{2pt}
+    {
+    #2 \ $|$ \uline{\href{mailto:#3}{#3}} \ $|$ \uline{\href{https://www.linkedin.com/in/#4}{linkedin.com/in/#4}} \ $|$ \uline{\href{https://github.com/#5}{github.com/#5}}
+	}
+    \vspace{2pt} \\
+  \end{center} \\
     \hline
   \end{tabular}
   \vspace{10pt}
 }
 
-% Use 10pt font size for the header
+% Using 10pt font size for the header
 \begingroup
 \fontsize{10pt}{12pt}\selectfont
 \header
-{Arfaz Hossain}                 % Name
-{\plus\ 1 (250) 880 8402}       % Phone Number
-{arfazhussain@uvic.ca}          % Email
-{arfazca}                  % LinkedIn Username
-{arfazca}                     % GitHub Username
+{\FullName}
+{\plus \Phone}
+{\Email}
+{\LinkedIn}
+{\GitHub}
 \endgroup
 
 \today \DateSpacing
