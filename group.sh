@@ -7,6 +7,7 @@ FILE_EXTENSIONS=(
     "csproj"
     "sln"
     "txt"
+    "sh"
 )
 
 # Function for processing files of a specific type
