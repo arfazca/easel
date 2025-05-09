@@ -15,7 +15,12 @@ dotnet clean "$PROJECT_FILE" || { echo "Clean failed"; exit 1; }
 echo "Building project..."
 dotnet build "$PROJECT_FILE" || { echo "Build failed"; exit 1; }
 
-echo "Running project..."
-dotnet run --project "$PROJECT_FILE" || { echo "Run failed"; exit 1; }
+if [[ "$1" == "--non-interactive" || "$1" == "-n" ]]; then
+    echo "Running in non-interactive mode..."
+    dotnet run --project "$PROJECT_FILE" -- "$@" || { echo "Run failed"; exit 1; }
+else
+    echo "Running in interactive mode..."
+    dotnet run --project "$PROJECT_FILE" || { echo "Run failed"; exit 1; }
+fi
 
 echo "All tasks completed successfully"
