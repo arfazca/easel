@@ -48,8 +48,16 @@ public static class Program
         var suffixOption = new Option<string>(
             name: "--suffix",
             description: "Company suffix",
-            getDefaultValue: () => string.Empty);
-            
+            parseArgument: result =>
+            {
+                if (result.Tokens.Count == 0) return string.Empty;
+                return result.Tokens.Single().Value;
+            })
+        {
+            Arity = ArgumentArity.ZeroOrOne,
+            AllowMultipleArgumentsPerToken = false
+        };
+        
         var divisionOption = new Option<string>(
             name: "--division",
             description: "Division/department");

@@ -23,10 +23,9 @@ public class ApplicationData
             return $"TEST-{DateTime.Now:yyyy-MM-dd}-{Random.Shared.Next(10, 100)}";
         }
 
-        return $"Hussain, Arfaz - Placement Application - {Position} - {CompanyName} {CompanySuffix} - {Division}"
+        return $"Hussain, Arfaz - Placement Application - {Position}"
             .Replace("/", "")
             .Replace("\\", "")
-            .Replace(",", "")
             .Replace(";", "");
     }
 }
