@@ -18,10 +18,25 @@ public class ApplicationManager(
         string division,
         string city,
         string state,
-        string terms)
+        string terms,
+        bool hasReference,
+        string? referenceName,
+        string? referenceTitle)
     {
         try
         {
+            // Console.WriteLine($"Template: {templateName}");
+            // Console.WriteLine($"Position: {position}");
+            // Console.WriteLine($"Company: {companyName}");
+            // Console.WriteLine($"Suffix: {companySuffix}");
+            // Console.WriteLine($"Division: {division}");
+            // Console.WriteLine($"City: {city}");
+            // Console.WriteLine($"State: {state}");
+            // Console.WriteLine($"Terms: {terms}");
+            // Console.WriteLine($"HasReference: {hasReference}");
+            // Console.WriteLine($"ReferenceName: {referenceName}");
+            // Console.WriteLine($"ReferenceTitle: {referenceTitle}");
+
             var termPeriods = pathProvider.GetTermPeriods();
             if (termPeriods.Length == 0)
             {
@@ -37,18 +52,21 @@ public class ApplicationManager(
                 City = city,
                 State = state,
                 Terms = terms,
-                UpTerm = termPeriods.Length > 0 ? termPeriods[0] : "DEFAULT TERM"
+                UpTerm = termPeriods.Length > 0 ? termPeriods[0] : "DEFAULT TERM",
+                HasReference = hasReference,
+                ReferenceName = referenceName,
+                ReferenceTitle = referenceTitle
             };
 
             // Generate document
             var workingDir = await templateService.GenerateDocument(appData, templateName);
-        
+    
             // Compile to PDF
             var outputPath = await templateService.CompileToPdf(
                 workingDir, 
                 appData.GenerateFileName(),
                 appData);
-            
+        
             Console.WriteLine($"Generated: {outputPath}");
         }
         catch (Exception ex)

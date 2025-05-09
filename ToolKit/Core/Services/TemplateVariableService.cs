@@ -60,7 +60,7 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         sb.AppendLine();
     }
 
-    private static void AppendPositionInfo(StringBuilder sb, ApplicationData data)
+    private void AppendPositionInfo(StringBuilder sb, ApplicationData data)
     {
         sb.AppendLine("% Position Information");
         sb.AppendLine($@"\newcommand{{\Position}}{{{data.Position}}}");
@@ -71,6 +71,31 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         sb.AppendLine($@"\newcommand{{\LocationState}}{{{data.State}}}");
         sb.AppendLine($@"\newcommand{{\Terms}}{{{data.Terms}}}");
         sb.AppendLine($@"\newcommand{{\upTerm}}{{{data.UpTerm}}}");
+
+        // Add reference information if present
+        if (data.HasReference && !string.IsNullOrEmpty(data.ReferenceName))
+        {
+            sb.AppendLine($@"\newcommand{{\RecipientName}}{{{data.ReferenceName}}}");
+            sb.AppendLine($@"\newcommand{{\RecipientTitle}}{{{data.ReferenceTitle ?? ""}}}");
+        
+            // Format company details with recipient info
+            sb.AppendLine(@"\newcommand{\CompanyDetails}{");
+            sb.AppendLine(@"    \textbf{\RecipientName} \\");
+            sb.AppendLine(@"    \RecipientTitle \\");
+            sb.AppendLine(@"    \Division, \textit{\CompanyName}\textit{ \CompanyNameSuffix} \\");
+            sb.AppendLine(@"    \text{\LocationCity}, \text{\LocationState} \CompanyAddressSpacing");
+            sb.AppendLine(@"}");
+        }
+        else
+        {
+            // Format company details without recipient info
+            sb.AppendLine(@"\newcommand{\CompanyDetails}{");
+            sb.AppendLine(@"    \textbf{\CompanyName}\textbf{ \CompanyNameSuffix}\CompanyDivisionSpacing");
+            sb.AppendLine(@"    \text{\Division}\LocationSpacing");
+            sb.AppendLine(@"    \text{\LocationCity}, \text{\LocationState} \CompanyAddressSpacing");
+            sb.AppendLine(@"}");
+        }
+    
         sb.AppendLine();
     }
 

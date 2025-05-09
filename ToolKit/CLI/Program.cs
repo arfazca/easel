@@ -74,6 +74,26 @@ public static class Program
             name: "--terms",
             description: "Term length");
 
+        var hasReferenceOption = new Option<bool>(
+            name: "--reference",
+            description: "Has job reference (1 for yes, 0 for no)");
+            
+        var referenceNameOption = new Option<string>(
+            name: "--reference-name",
+            description: "Reference name")
+        {
+            Arity = ArgumentArity.ZeroOrOne,
+            AllowMultipleArgumentsPerToken = false
+        };
+        
+        var referenceTitleOption = new Option<string>(
+            name: "--reference-title",
+            description: "Reference title")
+        {
+            Arity = ArgumentArity.ZeroOrOne,
+            AllowMultipleArgumentsPerToken = false
+        };
+
         rootCommand.AddOption(templateOption);
         rootCommand.AddOption(positionOption);
         rootCommand.AddOption(companyOption);
@@ -82,15 +102,21 @@ public static class Program
         rootCommand.AddOption(cityOption);
         rootCommand.AddOption(stateOption);
         rootCommand.AddOption(termsOption);
+        rootCommand.AddOption(hasReferenceOption);
+        rootCommand.AddOption(referenceNameOption);
+        rootCommand.AddOption(referenceTitleOption);
 
-        rootCommand.SetHandler<string, string, string, string, string, string, string, string>(
-            async (template, position, company, suffix, division, city, state, terms) => 
+        rootCommand.SetHandler<string, string, string, string, string, string, string, string, bool, string, string>(
+            async (template, position, company, suffix, division, city, state, terms, hasReference, referenceName, referenceTitle) => 
         {
             var host = CreateHostBuilder(args).Build();
             var appManager = host.Services.GetRequiredService<ApplicationManager>();
-            await appManager.RunNonInteractiveAsync(template, position, company, suffix, division, city, state, terms);
+            await appManager.RunNonInteractiveAsync(
+                template, position, company, suffix, division, city, state, terms,
+                hasReference, referenceName, referenceTitle);
         }, 
-        templateOption, positionOption, companyOption, suffixOption, divisionOption, cityOption, stateOption, termsOption);
+        templateOption, positionOption, companyOption, suffixOption, divisionOption, cityOption, stateOption, termsOption,
+        hasReferenceOption, referenceNameOption, referenceTitleOption);
 
         await rootCommand.InvokeAsync(commandArgs);
     }

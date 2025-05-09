@@ -32,7 +32,6 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
             ) ?? "Human Resources"
         };
 
-        // Get available provinces from Location Data directory
         var locationDataPath = Path.Combine(pathProvider.GetDataPath(), "Location Data");
         var provinceFiles = Directory.GetFiles(locationDataPath, "*.txt")
             .Select(Path.GetFileNameWithoutExtension)
@@ -41,7 +40,7 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
 
         var province = await SelectWithFzf(
             "Select Province/State",
-            options: provinceFiles! // Non-null assertion since we filtered nulls
+            options: provinceFiles! 
         ) ?? "British Columbia";
 
         data.State = province;
@@ -53,11 +52,27 @@ public class ConsoleInterfaceService(IBasePathProvider pathProvider) : IConsoleI
         data.Terms = await SelectWithFzf(
             "Select Term Length",
             Path.Combine(pathProvider.GetDataPath(), "Term Lengths.txt")
-        ) ?? "4 months";
+        ) ?? "8 months";
 
         data.UpTerm = termPeriods.Length > 0
             ? termPeriods[0]
             : throw new InvalidOperationException("No term periods configured");
+
+        Console.WriteLine("Do you have a specific reference for this job? (y/n)");
+        var hasReference = Console.ReadLine()?.Trim().ToLower() == "y";
+        data.HasReference = hasReference;
+
+        if (hasReference)
+        {
+            Console.Write("Reference Name: ");
+            data.ReferenceName = Console.ReadLine()?.Trim();
+            
+            Console.Write("Reference Title: ");
+            data.ReferenceTitle = Console.ReadLine()?.Trim();
+            
+            data.ReferenceCity = data.City;
+            data.ReferenceState = data.State;
+        }
 
         return data;
     }
