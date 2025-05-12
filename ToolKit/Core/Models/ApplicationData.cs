@@ -20,10 +20,11 @@ public class ApplicationData
     {
         if (Position.Equals("TEST", StringComparison.OrdinalIgnoreCase))
         {
-            return $"TEST-{DateTime.Now:yyyy-MM-dd}-{Random.Shared.Next(10, 100)}";
+            return $"TEST-{DateTime.Now:yyyy-MM-dd-HHmm}";
         }
 
-        return $"Hussain, Arfaz - Placement Application - {Position}"
+        // Format: Name - Application - Company - Position - Date
+        return $"Hussain, Arfaz - {CompanyName} - {Position}"
             .Replace("/", "")
             .Replace("\\", "")
             .Replace(";", "");
