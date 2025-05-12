@@ -60,7 +60,7 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         sb.AppendLine();
     }
 
-    private static void AppendPositionInfo(StringBuilder sb, ApplicationData data)
+    private void AppendPositionInfo(StringBuilder sb, ApplicationData data)
     {
         sb.AppendLine("% Position Information");
         sb.AppendLine($@"\newcommand{{\Position}}{{{data.Position}}}");
@@ -71,6 +71,31 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         sb.AppendLine($@"\newcommand{{\LocationState}}{{{data.State}}}");
         sb.AppendLine($@"\newcommand{{\Terms}}{{{data.Terms}}}");
         sb.AppendLine($@"\newcommand{{\upTerm}}{{{data.UpTerm}}}");
+
+        // Add reference information if present
+        if (data.HasReference && !string.IsNullOrEmpty(data.ReferenceName))
+        {
+            sb.AppendLine($@"\newcommand{{\RecipientName}}{{{data.ReferenceName}}}");
+            sb.AppendLine($@"\newcommand{{\RecipientTitle}}{{{data.ReferenceTitle ?? ""}}}");
+        
+            // Format company details with recipient info
+            sb.AppendLine(@"\newcommand{\CompanyDetails}{");
+            sb.AppendLine(@"    \textbf{\RecipientName} \\");
+            sb.AppendLine(@"    \RecipientTitle \\");
+            sb.AppendLine(@"    \Division, \textit{\CompanyName}\textit{ \CompanyNameSuffix} \\");
+            sb.AppendLine(@"    \text{\LocationCity}, \text{\LocationState} \CompanyAddressSpacing");
+            sb.AppendLine(@"}");
+        }
+        else
+        {
+            // Format company details without recipient info
+            sb.AppendLine(@"\newcommand{\CompanyDetails}{");
+            sb.AppendLine(@"    \textbf{\CompanyName}\textbf{ \CompanyNameSuffix}\CompanyDivisionSpacing");
+            sb.AppendLine(@"    \text{\Division}\LocationSpacing");
+            sb.AppendLine(@"    \text{\LocationCity}, \text{\LocationState} \CompanyAddressSpacing");
+            sb.AppendLine(@"}");
+        }
+    
         sb.AppendLine();
     }
 
@@ -138,7 +163,7 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         }
     
         sb.AppendLine(@"\newcommand{\FourthParagraph}{");
-        sb.AppendLine(@"  Through these combined experiences, I have gained a good understanding of software development and testing practices. I am currently seeking a 4- or 8-month co-op work term. I really appreciate the time taken to review my application and look forward to speaking with the team further about this role.");
+        sb.AppendLine(@"  Through these combined experiences, I have gained a good understanding of software development and testing practices. I am currently seeking {\Terms} co-op work term. I really appreciate the time taken to review my application and look forward to speaking with the team further about this role.");
         sb.AppendLine("}");
         sb.AppendLine();
     }
