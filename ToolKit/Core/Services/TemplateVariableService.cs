@@ -163,7 +163,7 @@ public class TemplateVariableService(IFileSystemService fileSystem, IBasePathPro
         }
     
         sb.AppendLine(@"\newcommand{\FourthParagraph}{");
-        sb.AppendLine(@"  Through these combined experiences, I have gained a good understanding of software development and testing practices. I am currently seeking a 4- or 8-month co-op work term. I really appreciate the time taken to review my application and look forward to speaking with the team further about this role.");
+        sb.AppendLine(@"  Through these combined experiences, I have gained a good understanding of software development and testing practices. I am currently seeking {\Terms} co-op work term. I really appreciate the time taken to review my application and look forward to speaking with the team further about this role.");
         sb.AppendLine("}");
         sb.AppendLine();
     }
